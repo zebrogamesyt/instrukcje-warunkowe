@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>16 Algorytmów JS</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Courier New', monospace;
+      background: #0f0f13;
+      color: #e2e2e2;
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.4rem;
+      color: #fff;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #666;
+      margin-bottom: 2.5rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: #16161d;
+      border: 1px solid #2a2a35;
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      transition: border-color 0.2s;
+    }
+
+    .card:hover { border-color: #4a4a60; }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .num {
+      background: #1e1e2e;
+      border: 1px solid #3a3a50;
+      color: #888;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.08em;
+    }
+
+    .card-title {
+      font-size: 13px;
+      color: #aaa;
+      font-weight: 400;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    label {
+      font-size: 12px;
+      color: #666;
+    }
+
+    input[type=number], input[type=text] {
+      background: #1e1e2e;
+      border: 1px solid #2a2a40;
+      color: #e2e2e2;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      padding: 5px 8px;
+      border-radius: 5px;
+      width: 80px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input[type=number]:focus, input[type=text]:focus {
+      border-color: #5555aa;
+    }
+
+    button {
+      background: #1e1e2e;
+      border: 1px solid #3a3a55;
+      color: #ccc;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      padding: 6px 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    button:hover {
+      background: #2a2a45;
+      color: #fff;
+    }
+
+    button:active { transform: scale(0.97); }
+
+    .output {
+      font-size: 12px;
+      line-height: 1.6;
+      color: #88dd99;
+      background: #0b0b10;
+      border: 1px solid #1e1e2e;
+      border-radius: 6px;
+      padding: 8px 10px;
+      min-height: 36px;
+      max-height: 140px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+      margin-top: 8px;
+    }
+
+    .calc-display {
+      background: #0b0b10;
+      border: 1px solid #2a2a40;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-size: 20px;
+      text-align: right;
+      color: #fff;
+      min-height: 44px;
+      margin-bottom: 10px;
+      font-family: 'Courier New', monospace;
+      word-break: break-all;
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .calc-grid button {
+      padding: 10px 4px;
+      font-size: 15px;
+      border-radius: 6px;
+    }
+
+    .calc-grid .op {
+      background: #1a1a35;
+      border-color: #4040aa;
+      color: #8888ff;
+    }
+
+    .calc-grid .op:hover {
+      background: #2a2a55;
+      color: #aaaaff;
+    }
+
+    .calc-grid .eq {
+      background: #0d2d1a;
+      border-color: #2a7a45;
+      color: #44cc77;
+    }
+
+    .calc-grid .eq:hover {
+      background: #1a4a2e;
+      color: #66ee99;
+    }
+
+    .span2 { grid-column: span 2; }
+  </style>
+</head>
+<body>
+
+<h1>16 Algorytmów</h1>
+<p class="subtitle">JavaScript &mdash; pętle, obliczenia, interakcja</p>
+
+<div class="grid">
+
+  <div class="card">
+    <div class="card-header"><span class="num">01</span><span class="card-title">10 liczb od 1</span></div>
+    <button onclick="run1()">Uruchom</button>
+    <div class="output" id="o1"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="num">02</span><span class="card-title">10 liczb od 10 malejąco</span></div>
+    <button onclick="run2()">Uruchom</button>
+    <div class="output" id="o2"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="num">03</span><span class="card-title">Suma 10 liczb od 1</span></div>
+    <button onclick="run3()">Oblicz</button>
+    <div class="output" id="o3"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="num">04</span><span class="card-title">10 parzystych od 2</span></div>
+    <button onclick="run4()">Uruchom</button>
+    <div class="output" id="o4"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="num">05&06</span><span class="card-title">Oszczędności z odsetkami 8%/mies</span></div>
+    <div class="row">
+      <label>Miesiące (X):</label>
+      <input type="number" id="x56" value="12" min="1" max="360">
+      <label>Kwota/mies (Y zł):</label>
+      <input type="number" id="y56" value="500" min="1">
+    </div>
+    <button onclick="run56()">Oblicz</button>
+    <div class="output" id="o56"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="num">07</span><span class="card-title">Suma ciągu: 100 el., a₁=5, d=10</span></div>
+    <button onclick="run7()">Oblicz</button>
+    <div class="output" id="o7"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="num">08</span><span class="card-title">Cegły w piramidzie 10×10</span></div>
+    <button onclick="run8()">Oblicz</button>
+    <div class="output" id="o8"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="num">09</span><span class="card-title">Cegły w ścianie (X szer, Y rzędów, –Z)</span></div>
+    <div class="row">
+      <label>X:</label><input type="number" id="x9" value="10" min="1">
+      <label>Y:</label><input type="number" id="y9" value="5" min="1">
+      <label>Z:</label><input type="number" id="z9" value="1" min="0">
+    </div>
+    <button onclick="run9()">Oblicz</button>
+    <div class="output" id="o9"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="num">10</span><span class="card-title">Waga ściany z pkt 08 (K kg/cegłę)</span></div>
+    <div class="row">
+      <label>K (kg):</label>
+      <input type="number" id="k10" value="3.5" step="0.1" min="0.1">
+    </div>
+    <button onclick="run10()">Oblicz</button>
+    <div class="output" id="o10"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="num">11</span><span class="card-title">Kalkulator</span></div>
+    <div class="calc-display" id="calc-disp">0</div>
+    <div class="calc-grid">
+      <button onclick="calcBtn('7')">7</button>
+      <button onclick="calcBtn('8')">8</button>
+      <button onclick="calcBtn('9')">9</button>
+      <button class="op" onclick="calcBtn('/')">÷</button>
+      <button onclick="calcBtn('4')">4</button>
+      <button onclick="calcBtn('5')">5</button>
+      <button onclick="calcBtn('6')">6</button>
+      <button class="op" onclick="calcBtn('*')">×</button>
+      <button onclick="calcBtn('1')">1</button>
+      <button onclick="calcBtn('2')">2</button>
+      <button onclick="calcBtn('3')">3</button>
+      <button class="op" onclick="calcBtn('-')">−</button>
+      <button onclick="calcBtn('0')">0</button>
+      <button onclick="calcBtn('.')">.</button>
+      <button class="eq" onclick="calcEq()">=</button>
+      <button class="op" onclick="calcBtn('+')">+</button>
+      <button class="span2" onclick="calcClear()">C</button>
+      <button class="span2" onclick="calcBack()">⌫</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="num">12</span><span class="card-title">Ciąg arytmetyczny (N el., a₁=X, d=Y)</span></div>
+    <div class="row">
+      <label>N:</label><input type="number" id="n12" value="8" min="1" max="50">
+      <label>X:</label><input type="number" id="x12" value="3">
+      <label>Y:</label><input type="number" id="y12" value="4">
+    </div>
+    <button onclick="run12()">Generuj</button>
+    <div class="output" id="o12"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="num">13</span><span class="card-title">Suma liczb dopóki suma ≠ 0</span></div>
+    <div class="row">
+      <input type="number" id="a13" placeholder="Liczba A" style="width:110px">
+      <input type="number" id="b13" placeholder="Liczba B" style="width:110px">
+      <button onclick="run13()">Dodaj</button>
+      <button onclick="reset13()">Reset</button>
+    </div>
+    <div class="output" id="o13">Wpisz dwie liczby i kliknij Dodaj.</div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="num">14</span><span class="card-title">Silnia liczby n</span></div>
+    <div class="row">
+      <label>n:</label>
+      <input type="number" id="n14" value="7" min="0" max="20">
+      <button onclick="run14()">Oblicz</button>
+    </div>
+    <div class="output" id="o14"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="num">15</span><span class="card-title">Ciąg kwadratów (każda = poprzednia²)</span></div>
+    <div class="row">
+      <label>n:</label><input type="number" id="n15" value="5" min="1" max="10">
+      <label>a₁:</label><input type="number" id="a15" value="2">
+    </div>
+    <button onclick="run15()">Generuj</button>
+    <div class="output" id="o15"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="num">16</span><span class="card-title">Suma i średnia 10 losowych z &lt;50,100&gt;</span></div>
+    <button onclick="run16()">Losuj</button>
+    <div class="output" id="o16"></div>
+  </div>
+
+</div>
+
+<script>
+  function out(id, txt) { document.getElementById(id).textContent = txt; }
+
+  function run1() {
+    let r = [];
+    for (let i = 1; i <= 10; i++) r.push(i);
+    out('o1', r.join(', '));
+  }
+
+  function run2() {
+    let r = [];
+    for (let i = 10; i >= 1; i--) r.push(i);
+    out('o2', r.join(', '));
+  }
+
+  function run3() {
+    let s = 0;
+    for (let i = 1; i <= 10; i++) s += i;
+    out('o3', 'Suma = ' + s);
+  }
+
+  function run4() {
+    let r = [];
+    for (let i = 2; i <= 20; i += 2) r.push(i);
+    out('o4', r.join(', '));
+  }
+
+  function run56() {
+    const X = parseInt(document.getElementById('x56').value) || 12;
+    const Y = parseFloat(document.getElementById('y56').value) || 500;
+    let kwota = 0;
+    let log = '';
+    for (let m = 1; m <= X; m++) {
+      kwota += Y;
+      kwota += kwota * 0.08;
+      log += 'Mies. ' + m + ': ' + kwota.toFixed(2) + ' zl\n';
+    }
+    log += '\nLacznie: ' + kwota.toFixed(2) + ' zl';
+    out('o56', log.trim());
+  }
+
+  function run7() {
+    let s = 0, a = 5;
+    for (let i = 0; i < 100; i++) { s += a; a += 10; }
+    out('o7', 'Suma 100 elementow = ' + s);
+  }
+
+  function run8() {
+    let total = 0;
+    for (let w = 10; w >= 1; w--) total += w * w;
+    out('o8', 'Cegly w piramidzie = ' + total);
+  }
+
+  function run9() {
+    const X = parseInt(document.getElementById('x9').value) || 10;
+    const Y = parseInt(document.getElementById('y9').value) || 5;
+    const Z = parseInt(document.getElementById('z9').value) || 1;
+    let total = 0, szer = X, log = '';
+    for (let rz = 1; rz <= Y; rz++) {
+      if (szer <= 0) break;
+      total += szer;
+      log += 'Rzad ' + rz + ': ' + szer + ' cegiel\n';
+      szer -= Z;
+    }
+    log += 'Lacznie: ' + total + ' cegiel';
+    out('o9', log);
+  }
+
+  function run10() {
+    const K = parseFloat(document.getElementById('k10').value) || 3.5;
+    let total = 0;
+    for (let w = 10; w >= 1; w--) total += w * w;
+    out('o10', 'Cegly: ' + total + '\nWaga sciany: ' + (total * K).toFixed(1) + ' kg');
+  }
+
+  let calcCurrent = '0', calcPrev = '', calcOp = null, calcNewNum = true;
+
+  function calcBtn(v) {
+    const d = document.getElementById('calc-disp');
+    if (['+', '-', '*', '/'].includes(v)) {
+      if (!calcNewNum && calcOp) calcEq();
+      calcPrev = calcCurrent; calcOp = v; calcNewNum = true;
+    } else if (v === '.') {
+      if (calcNewNum) { calcCurrent = '0.'; calcNewNum = false; }
+      else if (!calcCurrent.includes('.')) calcCurrent += '.';
+    } else {
+      if (calcNewNum) { calcCurrent = v; calcNewNum = false; }
+      else calcCurrent = (calcCurrent === '0' ? v : calcCurrent + v);
+    }
+    d.textContent = calcCurrent;
+  }
+
+  function calcEq() {
+    if (!calcOp || calcPrev === '') return;
+    const a = parseFloat(calcPrev), b = parseFloat(calcCurrent);
+    let res;
+    if (calcOp === '+') res = a + b;
+    else if (calcOp === '-') res = a - b;
+    else if (calcOp === '*') res = a * b;
+    else res = b === 0 ? null : a / b;
+    if (res === null) { calcCurrent = 'Blad: /0'; }
+    else { calcCurrent = parseFloat(res.toFixed(10)).toString(); }
+    calcOp = null; calcPrev = ''; calcNewNum = true;
+    document.getElementById('calc-disp').textContent = calcCurrent;
+  }
+
+  function calcClear() {
+    calcCurrent = '0'; calcPrev = ''; calcOp = null; calcNewNum = true;
+    document.getElementById('calc-disp').textContent = '0';
+  }
+
+  function calcBack() {
+    if (calcNewNum) return;
+    if (calcCurrent.length > 1) calcCurrent = calcCurrent.slice(0, -1);
+    else calcCurrent = '0';
+    document.getElementById('calc-disp').textContent = calcCurrent;
+  }
+
+  function run12() {
+    const N = parseInt(document.getElementById('n12').value) || 8;
+    const X = parseFloat(document.getElementById('x12').value) || 3;
+    const Y = parseFloat(document.getElementById('y12').value) || 4;
+    let r = [], a = X;
+    for (let i = 0; i < N; i++) { r.push(a); a += Y; }
+    out('o12', r.join(', '));
+  }
+
+  let hist13 = [], stopped13 = false;
+
+  function run13() {
+    if (stopped13) { out('o13', 'Suma byla 0 — wcisnij Reset aby zacznac od nowa.'); return; }
+    const a = parseFloat(document.getElementById('a13').value);
+    const b = parseFloat(document.getElementById('b13').value);
+    if (isNaN(a) || isNaN(b)) { out('o13', 'Wpisz obie liczby!'); return; }
+    const s = a + b;
+    hist13.push('Krok ' + hist13.length + 1 + ': ' + a + ' + ' + b + ' = ' + s);
+    if (s === 0) { stopped13 = true; hist13.push('>> Suma = 0, koniec!'); }
+    out('o13', hist13.join('\n'));
+  }
+
+  function reset13() {
+    hist13 = []; stopped13 = false;
+    out('o13', 'Zresetowano. Wpisz nowe liczby.');
+  }
+
+  function run14() {
+    const n = parseInt(document.getElementById('n14').value);
+    if (isNaN(n) || n < 0) { out('o14', 'Wpisz liczbe >= 0'); return; }
+    let f = BigInt(1);
+    for (let i = 2n; i <= BigInt(n); i++) f *= i;
+    out('o14', n + '! = ' + f.toString());
+  }
+
+  function run15() {
+    const n = parseInt(document.getElementById('n15').value) || 5;
+    const a1 = parseFloat(document.getElementById('a15').value);
+    if (isNaN(a1)) { out('o15', 'Podaj wartosc a1!'); return; }
+    let r = [a1];
+    for (let i = 1; i < n; i++) {
+      const next = r[i - 1] * r[i - 1];
+      if (!isFinite(next)) { r.push('(Infinity)'); break; }
+      r.push(next);
+    }
+    out('o15', r.join(', '));
+  }
+
+  function run16() {
+    let nums = [], s = 0;
+    for (let i = 0; i < 10; i++) {
+      const x = Math.floor(Math.random() * 51) + 50;
+      nums.push(x); s += x;
+    }
+    const avg = (s / 10).toFixed(1);
+    out('o16', 'Liczby: ' + nums.join(', ') + '\nSuma: ' + s + '\nSrednia: ' + avg);
+  }
+</script>
+</body>
+</html>
